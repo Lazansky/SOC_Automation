@@ -1,9 +1,13 @@
 
 package Page;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.Duration;
 
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -13,11 +17,21 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.MediaEntityBuilder;
+import com.aventstack.extentreports.reporter.ExtentSparkReporter;
+import com.google.common.io.Files;
+
 public class searchCredenciado {
 
 	WebDriver driver;
 
 	Actions action;
+	
+    ExtentReports extent = new ExtentReports();
+    ExtentSparkReporter spark = new ExtentSparkReporter("target/Spark/Spark.html");
+	String path = System.getProperty("user.dir");
+    
 
 	@FindBy(xpath = "//a[contains(text(),'Funcionalidades')]")
 	WebElement iconFuncionalidades;
@@ -45,6 +59,9 @@ public class searchCredenciado {
 
 	@FindBy(xpath = "//div[@style = 'position: absolute; left: 0px; top: 0px; height: 115px; width: 100%;']//button[@type = 'button']")
 	WebElement btnSaibaMais;
+	
+	@FindBy(xpath = "//div[@style = 'position: absolute; left: 0px; top: 0px; height: 115px; width: 100%;']//section")
+	WebElement btnSaibaMais1;
 
 	@FindBy(id = "ipt-busca-credenciado-2")
 	WebElement txtCEP;
@@ -71,20 +88,36 @@ public class searchCredenciado {
 
 	}
 
-	public void realizaPesquisa(String txt) {
+	public void realizaPesquisa(String txt) throws IOException {
 
+
+		
 		try {
 			Thread.sleep(3000);
-			driver.navigate().refresh();
 
+			if(!txtCEP.isDisplayed()) {
+				driver.navigate().refresh();
+			}
 			WebElement wait = new WebDriverWait(driver, Duration.ofSeconds(30))
 					.until(ExpectedConditions.elementToBeClickable(txtCEP));
 
+			extent.attachReporter(spark);
 			txtCEP.sendKeys(txt);
 			expandConveniencias.click();
 			cbxConveniencia.click();
 			btnBuscar.click();
+			btnSaibaMais1.click();
 			btnSaibaMais.click();
+			
+			File f = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+			Files.copy(f, new File(path+"/BDD_CucumberFramework/src/main/resources/Evidence/Pesquisa.png"));
+			
+			
+	        extent.createTest("PesquisaRealizada1")
+            .addScreenCaptureFromPath(path+"/BDD_CucumberFramework/src/main/resources/Evidence/Pesquisa.png")
+            .pass(MediaEntityBuilder.createScreenCaptureFromPath(path+"/BDD_CucumberFramework/src/main/resources/Evidence/Pesquisa.png").build());
+	        extent.flush();
+	        driver.close();
 
 		} catch (InterruptedException e) {
 			e.printStackTrace();

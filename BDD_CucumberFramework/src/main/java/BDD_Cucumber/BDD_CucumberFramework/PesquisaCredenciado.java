@@ -1,5 +1,6 @@
 package BDD_Cucumber.BDD_CucumberFramework;
 
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.WebDriver;
@@ -44,7 +45,7 @@ public class PesquisaCredenciado {
 	}
 
 	@And("preencher os filtros para busca")
-	public void preencher_os_filtros_para_busca() {
+	public void preencher_os_filtros_para_busca() throws IOException {
 
 		search.realizaPesquisa("06330000");
 	}

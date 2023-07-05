@@ -7,7 +7,7 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-import Page.searchPage;
+import Page.searchBlog;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -16,7 +16,7 @@ import io.cucumber.java.en.When;
 public class PesquisaSite {
 
 	WebDriver driver = null;
-	searchPage search;
+	searchBlog search;
 
 	@SuppressWarnings("deprecation")
 	@Given("Usuário está na página principal")
@@ -40,7 +40,9 @@ public class PesquisaSite {
 	@When("Usuário clica na lupa de pesquisa")
 	public void usuário_clica_na_lupa_de_pesquisa() {
 
-		driver.findElement(By.xpath("//i[@class='fas fa-search']")).click();
+		search = new searchBlog(driver);
+		
+		search.clickSearch();
 
 		System.out.println("Teste OK");
 	}
@@ -48,8 +50,7 @@ public class PesquisaSite {
 	@And("Digita o desejado na barra de busca")
 	public void digita_o_desejado_na_barra_de_busca() {
 
-		driver.findElement(By.xpath("//input[@name='s']")).sendKeys("SOC");
-		driver.findElement(By.xpath("//input[@name='s']")).sendKeys(Keys.ENTER);
+		search.insertSearch("SOC");
 
 		System.out.println("Teste OK");
 	}

@@ -2,8 +2,6 @@ package BDD_Cucumber.BDD_CucumberFramework;
 
 import java.util.concurrent.TimeUnit;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
@@ -22,7 +20,7 @@ public class PesquisaSite {
 	@Given("Usuário está na página principal")
 	public void usuário_está_na_página_principal() {
 
-		System.out.println("Teste OK");
+		
 		String path = System.getProperty("user.dir");
 		System.getProperty("webdriver.chrome.driver", path + "\\src\\main\\resources\\drivers\\chromedriver.exe");
 
@@ -34,7 +32,7 @@ public class PesquisaSite {
 		driver.manage().window().maximize();
 
 		driver.get("https://www.soc.com.br/");
-
+		System.out.println("Teste OK");
 	}
 
 	@When("Usuário clica na lupa de pesquisa")
